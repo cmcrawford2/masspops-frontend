@@ -23,7 +23,7 @@ class App extends Component {
   }
 
   getTestVar = async() => {
-    await fetch('v1/home')
+    await fetch('https://masspops-server.herokuapp.com/v1/home')
       .then(res => res.json().then((data) => {
         console.log(data.message);
       }))
@@ -31,7 +31,7 @@ class App extends Component {
   
   getTopics = async () => {
     let topicsArray = [];
-    await fetch('v1/topics')
+    await fetch('https://masspops-server.herokuapp.com/v1/topics')
       .then(res => res.json().then((data) => {
         topicsArray = data.topics.map(topic => {
           return (
@@ -122,7 +122,7 @@ class App extends Component {
     console.log(topicIds);
     const topicIdString = "(" + topicIds.join() + ")";
     let questionIds = [];
-    await fetch(`v1/topicQuestions/${topicIdString}`)
+    await fetch(`https://masspops-server.herokuapp.com/v1/topicQuestions/${topicIdString}`)
       .then(res => res.json().then((data) => {
         questionIds = data.questionIds.map(questionId => `'${questionId.Question_ID}'`);
       }))
@@ -130,13 +130,13 @@ class App extends Component {
     // Get all of the unique poll ids that contain relevant topics.
     const questionIdString = "(" + questionIds.join() + ")";
     let pollIdArray = [];
-    await fetch(`v1/pollIds/${questionIdString}`)
+    await fetch(`https://masspops-server.herokuapp.com/v1/pollIds/${questionIdString}`)
       .then(res => res.json().then((data) => {
         pollIdArray = data.pollIds.map(pollId => `'${pollId.Poll_ID}'`);
       }))
     const pollIdString = "(" + pollIdArray.join() + ")";
     let pollArray = [];
-    await fetch(`v1/polls/${pollIdString}`)
+    await fetch(`https://masspops-server.herokuapp.com/v1/polls/${pollIdString}`)
       .then(res => res.json().then((data) => {
         pollArray = data.polls.map(poll => { return({
           pollId: poll.poll_id,
@@ -225,7 +225,7 @@ class App extends Component {
     const pollIdString = "(" + pollIds.join() + ")";
     const questionIdString = "(" + this.state.allQuestionIds.join() + ")";
     // Fetch the subset of questions that belong to the selected polls.
-    const url = 'v1/questionIds/' + pollIdString + '/' + questionIdString;
+    const url = 'https://masspops-server.herokuapp.com/v1/questionIds/' + pollIdString + '/' + questionIdString;
     let questionIdArray = [];
     await fetch(url)
       .then(res => res.json().then((data) => {
@@ -235,7 +235,7 @@ class App extends Component {
 
     // Get all possible questions for this topic and selected polls.
     let questionArray = [];
-    await fetch(`v1/questions/${questionIds}`)
+    await fetch(`https://masspops-server.herokuapp.com/v1/questions/${questionIds}`)
       .then(res => res.json().then((data) => {
         questionArray = data.questions.map(question => {return({
           questionId: question.Question_ID,
@@ -245,8 +245,6 @@ class App extends Component {
     }))
     this.setState({polls: selectedPolls, allQuestions: questionArray})
   }
-  
-  
 
   // Question section
 
@@ -322,7 +320,7 @@ class App extends Component {
     const questionIds = selectedQuestions.map((question) => question.questionId);
     const questionIdString = "(" + questionIds.join() + ")";
     let allResults = [];
-    await fetch(`v1/results/${questionIdString}`)
+    await fetch(`https://masspops-server.herokuapp.com/v1/results/${questionIdString}`)
       .then(res => res.json().then((data) => {
         allResults = data.results.map(result => {return({
           pollId: result.Poll_ID,
